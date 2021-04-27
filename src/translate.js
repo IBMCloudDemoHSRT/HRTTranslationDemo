@@ -73,8 +73,8 @@ function main(params) {
       // found in the catch clause below
 
       // pick the language with the highest confidence, and send it back
-
-
+		console.log("------------------------------------------");
+		console.log(translateParams);
       languageTranslator.translate(translateParams)
           .then(translationResult => {
             console.log(JSON.stringify(translationResult, null, 2));
