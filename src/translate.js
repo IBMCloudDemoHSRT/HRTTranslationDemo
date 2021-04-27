@@ -47,7 +47,7 @@ function main(params) {
   });
 
   const translateParams = {
-    text: params.text,
+    text: params.body.text,
 	//modelId: 'de-en',
     target: "en"
   };
