@@ -60,7 +60,7 @@ function main(params) {
 	  
 	  if(typeof params.text == "string"){
 			
-			languageTranslator.identify()
+			languageTranslator.identify(params)
 			  .then(identifiedLanguages => {
 				console.log(JSON.stringify(identifiedLanguages, null, 2));
 				resolve({
