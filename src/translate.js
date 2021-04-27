@@ -48,7 +48,8 @@ function main(params) {
 
   const translateParams = {
     text: params.text,
-    target: "en"
+	modelId: "de-en"
+    //target: "en"
   };
 
   return new Promise(function (resolve, reject) {
@@ -75,7 +76,7 @@ function main(params) {
             resolve({
               statusCode: 200,
               body: {
-                translations: translationResult.result.translations,
+                translations: translationResult.result.translations[0].translation,
                 words: translationResult.result.word_count,
                 characters: translationResult.result.character_count,
               },
