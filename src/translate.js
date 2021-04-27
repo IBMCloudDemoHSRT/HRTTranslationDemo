@@ -1,3 +1,5 @@
+import "./detect-language.js";
+
 const LanguageTranslatorV3 = require('ibm-watson/language-translator/v3');
 const { IamAuthenticator } = require('ibm-watson/auth');
 
@@ -33,6 +35,22 @@ function main(params) {
    */
   const defaultLanguage = 'en';
 
+  const LanguageTranslatorV3 = require('ibm-watson/language-translator/v3');
+  const { IamAuthenticator } = require('ibm-watson/auth');
+
+  const languageTranslator = new LanguageTranslatorV3({
+    version: '2018-05-01',
+    authenticator: new IamAuthenticator({
+      apikey: 'erVQB65Csy6SLHjs81cFvFh6TfFOtEMYpviR9iBtFaiE',
+    }),
+    serviceUrl: 'https://api.eu-de.language-translator.watson.cloud.ibm.com/instances/942b7e56-9f66-49be-80b2-36f7f351b247',
+  });
+
+  const translateParams = {
+    text: params.text,
+    target: "en"
+  };
+
   return new Promise(function (resolve, reject) {
 
     try {
@@ -49,15 +67,26 @@ function main(params) {
       // found in the catch clause below
 
       // pick the language with the highest confidence, and send it back
-      resolve({
-        statusCode: 200,
-        body: {
-          translations: "<translated text>",
-          words: 1,
-          characters: 11,
-        },
-        headers: { 'Content-Type': 'application/json' }
-      });
+
+
+      languageTranslator.translate(translateParams)
+          .then(translationResult => {
+            console.log(JSON.stringify(translationResult, null, 2));
+            resolve({
+              statusCode: 200,
+              body: {
+                translations: translationResult.result.translations[0].translation,
+                words: translationResult.result.word_count,
+                characters: translationResult.result.character_count,
+              },
+              headers: { 'Content-Type': 'application/json' }
+            });
+          })
+          .catch(err => {
+            console.error('Error while initializing the AI service', err);
+            resolve(getTheErrorResponse('Error while communicating with the language service', defaultLanguage));
+          });
+
          
     } catch (err) {
       console.error('Error while initializing the AI service', err);
