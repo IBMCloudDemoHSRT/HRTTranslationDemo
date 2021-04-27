@@ -45,12 +45,17 @@ function main(params) {
     }),
     serviceUrl: 'https://api.eu-de.language-translator.watson.cloud.ibm.com/instances/942b7e56-9f66-49be-80b2-36f7f351b247',
   });
-
+/*
   const translateParams = {
     text: params.text,
 	modelId: 'de-en',
     //target: "en"
   };
+  */
+  const translateParams = {
+  text: 'Hello, how are you today?',
+  modelId: 'en-es',
+};
 
   return new Promise(function (resolve, reject) {
 
@@ -69,7 +74,7 @@ function main(params) {
 
       // pick the language with the highest confidence, and send it back
 
-
+/*
       languageTranslator.translate(translateParams)
           .then(translationResult => {
             console.log(JSON.stringify(translationResult, null, 2));
@@ -87,7 +92,15 @@ function main(params) {
             console.error('Error while initializing the AI service', err);
             resolve(getTheErrorResponse('Error while communicating with the language service', defaultLanguage));
           });
+*/
 
+languageTranslator.translate(translateParams)
+  .then(translationResult => {
+    console.log(JSON.stringify(translationResult, null, 2));
+  })
+  .catch(err => {
+    console.log('error:', err);
+  });
          
     } catch (err) {
       console.error('Error while initializing the AI service', err);
