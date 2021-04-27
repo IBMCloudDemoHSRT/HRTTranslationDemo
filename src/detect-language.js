@@ -60,7 +60,7 @@ function main(params) {
 	  
 	  if(typeof params.text == "string"){
 			
-			languageTranslator.listIdentifiableLanguages()
+			languageTranslator.identify()
 			  .then(identifiedLanguages => {
 				console.log(JSON.stringify(identifiedLanguages, null, 2));
 				resolve({
@@ -68,7 +68,7 @@ function main(params) {
 			body: {
 			  text: params.text, 
 			  language: identifiedLanguages.result.languages[0].language,
-			  confidence: identifiedLanguages.result.languages[0].name,
+			  confidence: identifiedLanguages.result.languages[0].confidence,
 			},
 			headers: { 'Content-Type': 'application/json' }
 		  });
