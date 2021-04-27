@@ -32,6 +32,17 @@ function main(params) {
    * The default language to choose in case of an error
    */
   const defaultLanguage = 'en';
+  
+  const LanguageTranslatorV3 = require('ibm-watson/language-translator/v3');
+	const { IamAuthenticator } = require('ibm-watson/auth');
+
+	const languageTranslator = new LanguageTranslatorV3({
+	  version: '2018-05-01',
+	  authenticator: new IamAuthenticator({
+		apikey: 'erVQB65Csy6SLHjs81cFvFh6TfFOtEMYpviR9iBtFaiE',
+	  }),
+	  serviceUrl: 'https://api.eu-de.language-translator.watson.cloud.ibm.com/instances/942b7e56-9f66-49be-80b2-36f7f351b247',
+	});
 
   return new Promise(function (resolve, reject) {
 
@@ -46,16 +57,29 @@ function main(params) {
 
       // in case of errors during the call resolve with an error message according to the pattern 
       // found in the catch clause below
-
-      resolve({
-        statusCode: 200,
-        body: {
-          text: params.text, 
-          language: "<Best Language>",
-          confidence: 0.5,
-        },
-        headers: { 'Content-Type': 'application/json' }
-      });
+	  
+	  if(typeof params.text == "string"){
+			
+			languageTranslator.listIdentifiableLanguages()
+			  .then(identifiedLanguages => {
+				console.log(JSON.stringify(identifiedLanguages, null, 2));
+				resolve({
+			statusCode: 200,
+			body: {
+			  text: params.text, 
+			  language: identifiedLanguages.languages[0].language,
+			  confidence: identifiedLanguages.languages[0].confidence,
+			},
+			headers: { 'Content-Type': 'application/json' }
+		  });
+			  })
+			  .catch(err => {
+				console.error('Error while initializing the AI service', err);
+      resolve(getTheErrorResponse('Error while communicating with the language service', defaultLanguage));
+			  });
+			
+		  
+	  }
 
 
     } catch (err) {
