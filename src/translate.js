@@ -74,7 +74,7 @@ function main(params) {
 
       // pick the language with the highest confidence, and send it back
 		console.log(translateParams);
-		if((typeof params.text == "string") && (source != null) && (target != null)){
+		if((typeof translateParams.text == "string") && (translateParams.source != null) && (translateParams.target != null)){
       languageTranslator.translate(translateParams)
           .then(translationResult => {
             console.log(JSON.stringify(translationResult, null, 2));
