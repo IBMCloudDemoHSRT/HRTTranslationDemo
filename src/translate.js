@@ -75,7 +75,7 @@ function main(params) {
             resolve({
               statusCode: 200,
               body: {
-                translations: translationResult.result.translations[0].translation,
+                translations: translationResult.result.translations,
                 words: translationResult.result.word_count,
                 characters: translationResult.result.character_count,
               },
