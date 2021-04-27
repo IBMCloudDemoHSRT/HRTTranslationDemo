@@ -48,7 +48,7 @@ function main(params) {
 
   const translateParams = {
     text: params.body.text,
-	//modelId: 'de-en',
+	source: params.body.language,
     target: "en"
   };
 /*
@@ -73,8 +73,8 @@ function main(params) {
       // found in the catch clause below
 
       // pick the language with the highest confidence, and send it back
-		console.log("------------------------------------------");
 		console.log(translateParams);
+		if((typeof params.text == "string") && (source != null) && (target != null)){
       languageTranslator.translate(translateParams)
           .then(translationResult => {
             console.log(JSON.stringify(translationResult, null, 2));
@@ -92,7 +92,7 @@ function main(params) {
             console.error('Error while initializing the AI service', err);
             resolve(getTheErrorResponse('Error while communicating with the language service', defaultLanguage));
           });
-
+		}
 /*
 languageTranslator.translate(translateParams)
   .then(translationResult => {
