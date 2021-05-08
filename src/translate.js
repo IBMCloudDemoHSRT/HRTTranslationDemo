@@ -81,6 +81,7 @@ function main(params) {
             resolve({
               statusCode: 200,
               body: {
+				detected input language: params.body.language,
                 translations: translationResult.result.translations[0].translation,
                 words: translationResult.result.word_count,
                 characters: translationResult.result.character_count,
